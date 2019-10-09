@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Assignment2_weather</string>
+    <string name="search_button_text">What\'s the weather?</string>
+    <string name="city_text_field_string">Input city</string>
+</resources>
