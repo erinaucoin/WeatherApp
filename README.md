@@ -10,3 +10,4 @@ Extra features include:
 -   when typing the name of a city, either the enter key or the button will trigger the search.
 -   the horizontal view is blocked to preserve the placement of information.
 -   when the user enters something other than a known city name, an error message appears.
+-   the city entered by the user is removed from the editText field after the search has occured.  This allows the user to search for another city without having to erase the first one.
