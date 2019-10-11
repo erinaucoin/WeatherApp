@@ -17,6 +17,7 @@ import org.json.JSONObject
 //TODO readme file, shared preferences, block horizontal view
 //TODO take care of layout warnings
 //TODO easier city input
+//TODO error handling
 
 const val WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather?q="
 const val API_KEY_URL = "&appid=e6b678d376b569e9637c39ce5dc40371"
@@ -35,14 +36,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val searchButton: Button = findViewById(R.id.search_button)
         searchButton.setOnClickListener{
-            val city = findViewById<EditText>(R.id.city_text_field)
+            var city = findViewById<EditText>(R.id.city_text_field).text
+            //var city2 = city.toString().replace(" ", "+")
+            //Toast.makeText(this, city2, Toast.LENGTH_LONG).show()
             //TODO clean this city text somehow
+            // san+francisco
 
             // Hide the keyboard.
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(it.windowToken, 0)
 
-            getWeatherInfo(WEATHER_URL + city.text + API_KEY_URL)
+            getWeatherInfo(WEATHER_URL + city + API_KEY_URL)
         }
     }
 
@@ -54,7 +58,8 @@ class MainActivity : AppCompatActivity() {
                     assignWeatherInfo(weatherInfo)
                 },
                 Response.ErrorListener {
-                    Toast.makeText(this, "Error getting data", Toast.LENGTH_LONG).show()
+                    findViewById<FrameLayout>(R.id.weather_frame).visibility = View.INVISIBLE
+                    findViewById<FrameLayout>(R.id.error_frame).visibility = View.VISIBLE
                 })
         )
     }
@@ -84,6 +89,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.humidity_pc).text = weatherInfo.humidity.toString() + "%"
         findViewById<TextView>(R.id.cloud_pc).text = weatherInfo.clouds.toString() + "%"
         findViewById<FrameLayout>(R.id.weather_frame).visibility = View.VISIBLE
+        findViewById<FrameLayout>(R.id.error_frame).visibility = View.INVISIBLE
     }
 
     override fun onStop() {

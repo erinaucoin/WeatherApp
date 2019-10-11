@@ -2,4 +2,7 @@
     <string name="app_name">Assignment2_weather</string>
     <string name="search_button_text">What\'s the weather?</string>
     <string name="city_text_field_string">Input city</string>
+    <string name="city_name_error">Couldn\'t find a city with that name.</string>
+    <string name="error">ERROR</string>
+    <string name="internet_error">Network connectivity problems</string>
 </resources>
