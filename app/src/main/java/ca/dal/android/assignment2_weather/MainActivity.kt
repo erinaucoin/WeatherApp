@@ -33,18 +33,9 @@ class MainActivity : AppCompatActivity() {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(it.windowToken, 0)
 
-            val weatherInfo = WeatherInfo("halifax", "clear", "overcast", 274.15, 274.15, 274.15, 86, 90)
+            //val weatherInfo = WeatherInfo("halifax", "clear", "overcast", 274.15, 274.15, 274.15, 86, 90)
 
-            //getWeatherInfo(WEATHER_URL + city.text + API_KEY_URL)
-
-            findViewById<TextView>(R.id.city_name).text = weatherInfo.city
-            findViewById<TextView>(R.id.main_weather).text = weatherInfo.main
-            findViewById<TextView>(R.id.description).text = weatherInfo.description
-            findViewById<TextView>(R.id.temp).text = (weatherInfo.temperature - 273.15).toInt().toString() + "°C"
-            findViewById<TextView>(R.id.max_temp).text = "Max Temp:  " + (weatherInfo.maxtemp - 273.15).toString() + "°C"
-            findViewById<TextView>(R.id.min_temp).text = "Min Temp:  " + (weatherInfo.mintemp - 273.15).toString() + "°C"
-            findViewById<TextView>(R.id.humidity_pc).text = weatherInfo.humidity.toString() + "%"
-            findViewById<TextView>(R.id.cloud_pc).text = weatherInfo.clouds.toString() + "%"
+            getWeatherInfo(WEATHER_URL + city.text + API_KEY_URL)
         }
     }
 
@@ -53,29 +44,42 @@ class MainActivity : AppCompatActivity() {
         Volley.newRequestQueue(this).add(
             StringRequest(Request.Method.GET, url,
                 Response.Listener<String> { response ->
-                    Toast.makeText(this, "no error", Toast.LENGTH_LONG).show()
-                    //val weatherInfo = extractWeatherInfo(JSONObject(response))
-                //TODO something with weatherInfo
+                    //Toast.makeText(this, "no error", Toast.LENGTH_LONG).show()
+                    val weatherInfo = extractWeatherInfo(JSONObject(response))
+                    assignWeatherInfo(weatherInfo)
                 },
                 Response.ErrorListener {
-                    Toast.makeText(this, "Error getting data", Toast.LENGTH_LONG).show() })
+                    Toast.makeText(this, "Error getting data", Toast.LENGTH_LONG).show()
+                })
         )
     }
 
-//    private fun extractWeatherInfo(response: JSONObject): WeatherInfo{
-//        return with(response) {
-////            WeatherInfo(
-////                getString("name"),
-////                getString("main"),
-////                getString("description"),
-//                //getString("temp"),
-//                //getString("temp_max"),
-//                //getString("temp_min"),
-//                //getString("humidity"),
-//                //getString("all")
-////            //TODO I don't think this will work with the arrays
-////            )
-//        }
-//    }
+    private fun extractWeatherInfo(response: JSONObject): WeatherInfo{
+        return with(response) {
+            WeatherInfo(
+                getString("name"),
+                getString("main"),
+                getString("description"),
+                275.15, 280.15, 270.15, 75, 90
+//                getString("temp").toDouble(),
+//                getString("temp_max").toDouble(),
+//                getString("temp_min").toDouble(),
+//                getString("humidity").toInt(),
+//                getString("all").toInt()
+            //TODO I don't think this will work with the arrays
+            )
+        }
+    }
+
+    private fun assignWeatherInfo(weatherInfo: WeatherInfo){
+        findViewById<TextView>(R.id.city_name).text = weatherInfo.city
+        findViewById<TextView>(R.id.main_weather).text = weatherInfo.main
+        findViewById<TextView>(R.id.description).text = weatherInfo.description
+        findViewById<TextView>(R.id.temp).text = (weatherInfo.temperature - 273.15).toInt().toString() + "°C"
+        findViewById<TextView>(R.id.max_temp).text = "Max Temp:  " + (weatherInfo.maxtemp - 273.15).toString() + "°C"
+        findViewById<TextView>(R.id.min_temp).text = "Min Temp:  " + (weatherInfo.mintemp - 273.15).toString() + "°C"
+        findViewById<TextView>(R.id.humidity_pc).text = weatherInfo.humidity.toString() + "%"
+        findViewById<TextView>(R.id.cloud_pc).text = weatherInfo.clouds.toString() + "%"
+    }
 }
 
