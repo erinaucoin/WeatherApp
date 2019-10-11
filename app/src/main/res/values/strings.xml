@@ -5,4 +5,6 @@
     <string name="city_name_error">Couldn\'t find a city with that name.</string>
     <string name="error">ERROR</string>
     <string name="internet_error">Network connectivity problems</string>
+    <string name="humidity_txt">Humidity</string>
+    <string name="cloud_txt">Clouds</string>
 </resources>

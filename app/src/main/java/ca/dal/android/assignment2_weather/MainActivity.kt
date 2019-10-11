@@ -4,20 +4,20 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.android.volley.Request
 import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import kotlinx.android.synthetic.main.activity_main.view.*
 import org.json.JSONObject
-//TODO readme file, shared preferences, block horizontal view
-//TODO take care of layout warnings
+
+//TODO readme file, shared preferences, block horizontal view, error handling, enter to trigger search
 //TODO easier city input
-//TODO error handling
+//TODO polish, colours
+//TODO internet connectivity error
 
 const val WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather?q="
 const val API_KEY_URL = "&appid=e6b678d376b569e9637c39ce5dc40371"
@@ -34,20 +34,34 @@ class MainActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences(SHAREDPREF_NAME, Context.MODE_PRIVATE)
 
         setContentView(R.layout.activity_main)
+
+        //Check if enter has been pressed
+        val citySearchText: EditText = findViewById(R.id.city_text_field)
+        citySearchText.setOnKeyListener( View.OnKeyListener{v, keyCode, event ->
+            if(keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP){
+                searchForCity(v)
+                return@OnKeyListener true
+            }
+            return@OnKeyListener false
+        })
+
+        //Check if button has been pressed
         val searchButton: Button = findViewById(R.id.search_button)
         searchButton.setOnClickListener{
-            var city = findViewById<EditText>(R.id.city_text_field).text
-            //var city2 = city.toString().replace(" ", "+")
-            //Toast.makeText(this, city2, Toast.LENGTH_LONG).show()
-            //TODO clean this city text somehow
-            // san+francisco
-
-            // Hide the keyboard.
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(it.windowToken, 0)
-
-            getWeatherInfo(WEATHER_URL + city + API_KEY_URL)
+            searchForCity(it)
         }
+    }
+
+    private fun searchForCity(view: View){
+        var city = findViewById<EditText>(R.id.city_text_field).text
+        var city2 = city.toString().replace(" ", "+")
+
+        // Hide the keyboard.
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+        //TODO press button with enterkey
+
+        getWeatherInfo(WEATHER_URL + city2 + API_KEY_URL)
     }
 
     private fun getWeatherInfo(url: String){
