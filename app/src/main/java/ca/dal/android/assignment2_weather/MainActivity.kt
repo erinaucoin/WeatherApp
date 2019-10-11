@@ -22,11 +22,12 @@ const val WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather?q="
 const val API_KEY_URL = "&appid=e6b678d376b569e9637c39ce5dc40371"
 const val PREV_CITY = "previous_city"
 const val SHAREDPREF_NAME = "weatherAppPref"
+const val LONDON_WEATHER_URL = "https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22"
 
-//https://api.openweathermap.org/data/2.5/weather?q=halifax&appid=e6b678d376b569e9637c39ce5dc40371
 class MainActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
+    private var intconnected:Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +71,12 @@ class MainActivity : AppCompatActivity() {
                     assignWeatherInfo(weatherInfo)
                 },
                 Response.ErrorListener {
+                    if(isInternetConnected()){
+                        findViewById<TextView>(R.id.err_msg).text = "Couldn't find a city with that name."
+                    }else{
+                        findViewById<TextView>(R.id.err_msg).text = "Network connectivity problems."
+                    }
+
                     findViewById<FrameLayout>(R.id.weather_frame).visibility = View.INVISIBLE
                     findViewById<FrameLayout>(R.id.error_frame).visibility = View.VISIBLE
                 })
@@ -106,6 +113,19 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<EditText>(R.id.city_text_field).hint = "Input city"
         findViewById<EditText>(R.id.city_text_field).text = null
+    }
+
+    private fun isInternetConnected(): Boolean{
+        Volley.newRequestQueue(this).add(
+            StringRequest(Request.Method.GET, LONDON_WEATHER_URL,
+                Response.Listener<String> { response ->
+                    intconnected = true
+                },
+                Response.ErrorListener {
+                    intconnected = false
+                })
+        )
+        return intconnected
     }
 
     override fun onStop() {
