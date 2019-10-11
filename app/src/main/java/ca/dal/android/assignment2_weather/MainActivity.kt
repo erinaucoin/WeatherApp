@@ -14,10 +14,6 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
 
-//TODO readme file, shared preferences, block horizontal view, error handling, enter to trigger search
-//TODO polish, colours
-//TODO internet connectivity error
-
 const val WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather?q="
 const val API_KEY_URL = "&appid=e6b678d376b569e9637c39ce5dc40371"
 const val PREV_CITY = "previous_city"
