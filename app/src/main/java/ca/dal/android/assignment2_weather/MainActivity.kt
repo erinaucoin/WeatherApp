@@ -100,8 +100,12 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.min_temp).text = "Min Temp:  " + (weatherInfo.mintemp - 273.15).toInt().toString() + "°C"
         findViewById<TextView>(R.id.humidity_pc).text = weatherInfo.humidity.toString() + "%"
         findViewById<TextView>(R.id.cloud_pc).text = weatherInfo.clouds.toString() + "%"
+
         findViewById<FrameLayout>(R.id.weather_frame).visibility = View.VISIBLE
         findViewById<FrameLayout>(R.id.error_frame).visibility = View.INVISIBLE
+
+        findViewById<EditText>(R.id.city_text_field).hint = "Input city"
+        findViewById<EditText>(R.id.city_text_field).text = null
     }
 
     override fun onStop() {
