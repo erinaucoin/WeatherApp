@@ -15,7 +15,6 @@ import com.android.volley.toolbox.Volley
 import org.json.JSONObject
 
 //TODO readme file, shared preferences, block horizontal view, error handling, enter to trigger search
-//TODO easier city input
 //TODO polish, colours
 //TODO internet connectivity error
 
@@ -59,7 +58,6 @@ class MainActivity : AppCompatActivity() {
         // Hide the keyboard.
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
-        //TODO press button with enterkey
 
         getWeatherInfo(WEATHER_URL + city2 + API_KEY_URL)
     }
